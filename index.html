@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>H-AGI Gateway — Система ментальной защиты в эпоху AI и AGI</title>
-  <script>
-    document.write('<scr' + 'ipt src="https://' + 'telegram.org' + '/js/telegram-web-app.js"></scr' + 'ipt>');
-  </script>
+  <title>H-AGI Gateway — Автономная система ментальной защиты</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0d1117" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="H-AGI Shield" />
   <style>
     * { box-sizing: border-box; user-select: none; }
     textarea, input { user-select: text; }
@@ -14,31 +16,10 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: #0d1117;
       color: #e6edf3;
-      margin: 0;
+      margin: 0 auto;
       padding: 14px;
       line-height: 1.45;
-    }
-    .denied-box {
-      display: none;
-      max-width: 420px;
-      margin: 60px auto;
-      background: #161b22;
-      border: 1px solid #f85149;
-      border-radius: 14px;
-      padding: 24px;
-      text-align: center;
-    }
-    .denied-box h2 { color: #ff7b72; margin-top: 0; font-size: 18px; }
-    .denied-box p { color: #8b949e; font-size: 13.5px; margin-bottom: 18px; }
-    .btn-tg {
-      display: inline-block;
-      background: #1f6feb;
-      color: #ffffff;
-      text-decoration: none;
-      padding: 11px 18px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 13px;
+      max-width: 760px;
     }
     .hero-banner {
       background: linear-gradient(135deg, #161b22 0%, #1c2433 100%);
@@ -78,16 +59,15 @@
       font-size: 11px;
       font-weight: 700;
     }
-    .limit-badge {
+    .mode-badge {
       display: inline-block;
-      background: rgba(210, 153, 34, 0.15);
-      border: 1px solid #d29922;
-      color: #e3b341;
+      background: rgba(88, 166, 255, 0.15);
+      border: 1px solid #58a6ff;
+      color: #58a6ff;
       padding: 4px 10px;
       border-radius: 20px;
       font-size: 11px;
       font-weight: 700;
-      cursor: pointer;
     }
     .card {
       background: #161b22;
@@ -125,7 +105,7 @@
       font-size: 11px;
       border-radius: 6px;
     }
-    textarea, input[type="text"] {
+    textarea {
       width: 100%;
       background: #0d1117;
       color: #ffffff;
@@ -134,9 +114,10 @@
       padding: 10px;
       font-size: 13px;
       margin-bottom: 8px;
+      height: 115px;
+      resize: vertical;
     }
-    textarea { height: 100px; resize: vertical; }
-    textarea:focus, input:focus { outline: none; border-color: #58a6ff; }
+    textarea:focus { outline: none; border-color: #58a6ff; }
     .btn-row { display: flex; gap: 8px; margin-bottom: 8px; }
     button {
       flex: 1;
@@ -148,11 +129,9 @@
       cursor: pointer;
     }
     button:active { opacity: 0.8; }
-    button:disabled { opacity: 0.45; cursor: not-allowed; }
     .btn-primary { background: #238636; color: #fff; }
     .btn-accent { background: #1f6feb; color: #fff; }
     .btn-secondary { background: #21262d; color: #c9d1d9; border: 1px solid #30363d; }
-    .btn-upgrade { background: linear-gradient(90deg, #1f6feb, #8957e5); color: #fff; width: 100%; margin-bottom: 8px; }
     .btn-danger { background: #3d181a; color: #f85149; border: 1px solid #f85149; width: 100%; }
     .metrics {
       font-size: 12px;
@@ -193,7 +172,7 @@
       display: none;
       width: 100%;
       min-height: 115px;
-      max-height: 240px;
+      max-height: 260px;
       overflow-y: auto;
       background: #0d1117;
       border: 1px solid #f8514966;
@@ -230,53 +209,41 @@
       border-radius: 3px;
       font-weight: 600;
     }
-    .modal-overlay {
-      display: none;
+    .toast {
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(1, 4, 9, 0.85);
-      z-index: 999;
-      padding: 16px;
-      overflow-y: auto;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1f6feb;
+      color: #ffffff;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     }
-    .modal-card {
-      max-width: 420px;
-      margin: 24px auto;
-      background: #161b22;
-      border: 1px solid #58a6ff;
-      border-radius: 14px;
-      padding: 16px;
-    }
-    .modal-card h3 { margin-top: 0; color: #ffffff; font-size: 16px; }
-    .modal-card p { font-size: 12.5px; color: #8b949e; margin-bottom: 12px; }
   </style>
 </head>
 <body>
-  <!-- ЭКРАН БЛОКИРОВКИ ВНЕ TELEGRAM -->
-  <div id="accessDeniedScreen" class="denied-box">
-    <h2>🔒 ДОСТУП ОГРАНИЧЕН</h2>
-    <p>Демо-витрина <b>H-AGI Gateway</b> защищена от автономного копирования и запускается исключительно внутри официального Telegram-бота.</p>
-    <a id="botLinkBtn" href="#" class="btn-tg">Открыть в Telegram-боте</a>
-  </div>
-
-  <!-- ОСНОВНОЙ ИНТЕРФЕЙС -->
   <div id="mainAppContainer">
     <div class="hero-banner">
       <div class="hero-title">🛡️ H-AGI <span>GATEWAY</span></div>
       <div class="hero-subtitle">Система ментальной защиты и суверенитета мышления в эпоху AI и AGI. Нейтрализация манипуляций, лести и утечек ПДн прямо в памяти вашего устройства.</div>
       <div class="badges-row">
         <div class="status-bar" style="cursor:pointer" onclick="showOfflineProof()">● RAM SHIELD: 0 ЗАПРОСОВ В СЕТЬ ⓘ</div>
-        <div class="limit-badge" id="demoLimitBadge" onclick="openLeadModal()">ДЕМО-ЛИМИТ: 5 / 5 ПРОВЕРОК</div>
+        <div class="mode-badge">АВТОНОМНЫЙ РЕЖИМ • БЕЗ API И АККАУНТОВ</div>
       </div>
     </div>
 
     <div class="card">
       <div class="card-header">
-        <div class="card-title">Шаг 1. Защита разума и ПДн (до 300 зн.)</div>
-        <button class="btn-demo" onclick="loadDemoContract()">⚡ Демо-кейс</button>
+        <div class="card-title">Шаг 1. Защита разума и ПДн</div>
+        <button class="btn-demo" onclick="loadDemoContract()">⚡ Тест-кейс</button>
       </div>
-      <div class="char-counter" id="outboundCounter">0 / 300 символов</div>
-      <textarea id="outboundInput" maxlength="300" oninput="enforceCharLimit('outboundInput', 'outboundCounter')" placeholder="Вставьте фрагмент текста до 300 знаков или нажмите «Демо-кейс»..."></textarea>
+      <div class="char-counter" id="outboundCounter">0 символов</div>
+      <textarea id="outboundInput" oninput="updateCharCounter('outboundInput', 'outboundCounter')" placeholder="Вставьте любой текст, письмо или фрагмент договора..."></textarea>
       <div class="btn-row">
         <button class="btn-secondary" onclick="pasteTo('outboundInput', 'outboundCounter')">Вставить</button>
         <button class="btn-primary" id="btnStep1" onclick="processOutbound()">1. Активировать щит</button>
@@ -289,11 +256,11 @@
 
     <div class="card">
       <div class="card-header">
-        <div class="card-title">Шаг 2. Ответ ИИ и Рентген (до 300 зн.)</div>
-        <button class="btn-demo" onclick="loadDemoAiReply()">🤖 Ответ ИИ</button>
+        <div class="card-title">Шаг 2. Ответ ИИ и Рентген</div>
+        <button class="btn-demo" onclick="loadDemoAiReply()">🤖 Тест ответа ИИ</button>
       </div>
-      <div class="char-counter" id="inboundCounter">0 / 300 символов</div>
-      <textarea id="inboundInput" maxlength="300" oninput="enforceCharLimit('inboundInput', 'inboundCounter')" placeholder="Вставьте ответ нейросети до 300 знаков или нажмите «Ответ ИИ»..."></textarea>
+      <div class="char-counter" id="inboundCounter">0 символов</div>
+      <textarea id="inboundInput" oninput="updateCharCounter('inboundInput', 'inboundCounter')" placeholder="Вставьте ответ любой нейросети для очистки и возврата ПДн..."></textarea>
       <div class="btn-row">
         <button class="btn-secondary" onclick="pasteTo('inboundInput', 'inboundCounter')">Вставить ответ</button>
         <button class="btn-accent" id="btnStep2" onclick="processInbound()">2. Очистить и вернуть ПДн</button>
@@ -308,60 +275,16 @@
       <button class="btn-secondary" style="width:100%" onclick="copyFrom('inboundOutput')">Скопировать чистый результат</button>
     </div>
 
-    <button class="btn-upgrade" onclick="openLeadModal()">🚀 Запросить полную версию без лимитов (Docker / API)</button>
     <button class="btn-danger" onclick="wipeRamVault()">🔥 Обнулить RAM-сейф (Zero-Trace)</button>
   </div>
 
-  <!-- МОДАЛЬНОЕ ОКНО ЗАЯВКИ НА ПОЛНУЮ ВЕРСИЮ -->
-  <div id="leadModal" class="modal-overlay">
-    <div class="modal-card">
-      <h3>🚀 Доступ к полной версии H-AGI</h3>
-      <p>В демо-режиме доступно 5 проверок до 300 символов. Для работы с целыми договорами, PDF/DOCX и подключения корпоративного шлюза (Docker / SDK) оставьте заявку:</p>
-      <input type="text" id="leadName" placeholder="Ваше имя или компания" />
-      <input type="text" id="leadContact" placeholder="Ваш @username в Telegram или телефон" />
-      <input type="text" id="leadTask" placeholder="Задача (например: юр. отдел, свой ИИ-шлюз)" />
-      <div class="btn-row">
-        <button class="btn-secondary" onclick="closeLeadModal()">Закрыть</button>
-        <button class="btn-primary" onclick="submitLeadForm()">Отправить заявку</button>
-      </div>
-    </div>
-  </div>
+  <div id="toastMsg" class="toast"></div>
   <script>
-    const BOT_USERNAME = "your_bot_username";
-    const ALLOWED_DOMAIN = "github.io";
-    const MAX_CHARS = 300;
-    const MAX_DEMO_CHECKS = 5;
-    const STORAGE_KEY = "hagi_demo_checks_used_v1";
-
-    document.getElementById("botLinkBtn").href = "https://" + "t.me" + "/" + BOT_USERNAME;
-
-    document.addEventListener("contextmenu", function(e) { e.preventDefault(); });
-    document.addEventListener("keydown", function(e) {
-      if ((e.ctrlKey || e.metaKey) && (e.key === "s" || e.key === "u" || e.key === "S" || e.key === "U")) {
+    document.addEventListener("contextmenu", function(e) {
+      if (e.target.tagName !== "TEXTAREA" && e.target.tagName !== "INPUT") {
         e.preventDefault();
       }
     });
-
-    const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
-
-    function verifyEnvironment() {
-      const host = window.location.hostname || "";
-      const isFile = window.location.protocol === "file:";
-      const hasTgInit = tg && typeof tg.initData === "string" && tg.initData.length > 0;
-      const validDomain = ALLOWED_DOMAIN === "" || host.indexOf(ALLOWED_DOMAIN) !== -1;
-
-      if (isFile || !hasTgInit || !validDomain) {
-        const appEl = document.getElementById("mainAppContainer");
-        if (appEl) appEl.remove();
-        document.getElementById("accessDeniedScreen").style.display = "block";
-        return false;
-      }
-      tg.ready();
-      tg.expand();
-      return true;
-    }
-
-    const isAuthorized = verifyEnvironment();
 
     let vault = {};
     let reverseVault = {};
@@ -376,74 +299,26 @@
       "Сохраняй без изменений маскированные токены в квадратных скобках (например, [ФИО_1], [ИНН_1], [ДОГОВОР_1]).";
 
     function notifyUser(msg) {
-      if (tg && tg.showAlert) {
-        tg.showAlert(msg);
-      } else {
-        alert(msg);
-      }
+      const toast = document.getElementById("toastMsg");
+      toast.innerText = msg;
+      toast.style.display = "block";
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(function() {
+        toast.style.display = "none";
+      }, 2600);
     }
 
     function showOfflineProof() {
-      notifyUser(
-        "Гарантия 100% конфиденциальности:\n\n" +
-        "Весь движок шифрования и очистки работает строго в оперативной памяти (RAM) вашего устройства.\n\n" +
-        "Прямо сейчас включите «Авиарежим» на телефоне — приложение продолжит маскировать и восстанавливать реквизиты без интернета."
+      alert(
+        "Гарантия 100% автономности и конфиденциальности:\n\n" +
+        "Весь движок шифрования и очистки работает строго в оперативной памяти (RAM) вашего устройства без API, аккаунтов и интернета.\n\n" +
+        "Прямо сейчас включите «Авиарежим» — приложение продолжит маскировать и восстанавливать реквизиты без сети."
       );
     }
 
-    function getUsedChecks() {
-      try {
-        return parseInt(localStorage.getItem(STORAGE_KEY) || "0", 10) || 0;
-      } catch (e) {
-        return 0;
-      }
-    }
-
-    function updateLimitUI() {
-      const used = getUsedChecks();
-      const left = Math.max(0, MAX_DEMO_CHECKS - used);
-      const badge = document.getElementById("demoLimitBadge");
-      if (badge) {
-        badge.innerText = "ДЕМО-ЛИМИТ: " + left + " / " + MAX_DEMO_CHECKS + " ПРОВЕРОК";
-      }
-      if (left <= 0) {
-        document.getElementById("btnStep1").disabled = true;
-        document.getElementById("btnStep2").disabled = true;
-        document.getElementById("outboundInput").disabled = true;
-        document.getElementById("inboundInput").disabled = true;
-      }
-    }
-
-    function consumeDemoCheck(sourceKey, currentText) {
-      if (sourceKey && lastProcessedText[sourceKey] === currentText) {
-        return true;
-      }
-      const used = getUsedChecks();
-      if (used >= MAX_DEMO_CHECKS) {
-        updateLimitUI();
-        openLeadModal();
-        return false;
-      }
-      if (sourceKey) {
-        lastProcessedText[sourceKey] = currentText;
-      }
-      try {
-        localStorage.setItem(STORAGE_KEY, String(used + 1));
-      } catch (e) {}
-      updateLimitUI();
-      if (used + 1 >= MAX_DEMO_CHECKS) {
-        setTimeout(openLeadModal, 700);
-      }
-      return true;
-    }
-
-    function enforceCharLimit(inputId, counterId) {
+    function updateCharCounter(inputId, counterId) {
       const el = document.getElementById(inputId);
-      if (el.value.length > MAX_CHARS) {
-        el.value = el.value.slice(0, MAX_CHARS);
-        notifyUser("В демо-версии ввод ограничен " + MAX_CHARS + " символами.");
-      }
-      document.getElementById(counterId).innerText = el.value.length + " / " + MAX_CHARS + " символов";
+      document.getElementById(counterId).innerText = el.value.length + " символов";
     }
     const DEMO_CONTRACT_SAMPLE =
       "Срочно помогите, я в панике! Подготовьте акт по Договору № 482/2026-К от 15.11.2026: " +
@@ -452,8 +327,7 @@
 
     function loadDemoContract() {
       document.getElementById("outboundInput").value = DEMO_CONTRACT_SAMPLE;
-      document.getElementById("outboundCounter").innerText = DEMO_CONTRACT_SAMPLE.length + " / " + MAX_CHARS + " символов";
-      if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred("light");
+      updateCharCounter("outboundInput", "outboundCounter");
     }
 
     function loadDemoAiReply() {
@@ -461,7 +335,7 @@
         maskPII(DEMO_CONTRACT_SAMPLE, true);
         if (typeof renderVaultTags === "function") renderVaultTags();
         document.getElementById("outboundMetrics").innerText =
-          "Демо-ключи загружены в RAM (" + Object.keys(vault).length + " ПДн) для теста Шага 2.";
+          "Тестовые ключи загружены в RAM (" + Object.keys(vault).length + " ПДн) для проверки Шага 2.";
       }
       const demoReply =
         "Конечно! С радостью помогу. По данным СМИ, акт по **[ДОГОВОР_1]** готов. " +
@@ -470,8 +344,7 @@
         "Вход с аллеи kubnews .\n" +
         "Источники:\n1. https://" + "pravo.gov.ru";
       document.getElementById("inboundInput").value = demoReply;
-      document.getElementById("inboundCounter").innerText = demoReply.length + " / " + MAX_CHARS + " символов";
-      if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred("light");
+      updateCharCounter("inboundInput", "inboundCounter");
     }
 
     function escapeHtml(str) {
@@ -495,7 +368,7 @@
       const rules = [
         { category: "КАДАСТР", regex: /\b\d{2}:\d{2}:\d{6,7}:\d+\b/g },
         { category: "КООРДИНАТЫ", regex: /\b[-+]?(?:[1-8]?\d(?:\.\d{4,})|90(?:\.0+)?)\s*[,;]\s*[-+]?(?:180(?:\.0+)?|(?:1[0-7]\d|[1-9]?\d)(?:\.\d{4,}))\b/g },
-        { category: "ДОГОВОР", regex: /(договор\w*|контракт\w*|соглашени\w*)\s*(?:№|N|#)?\s*[A-Za-zА-Яа-я0-9\-/]{3,25}/gi },
+        { category: "ДОГОВОР", regex: /(договор\w*|контракт\w*|соглашени\w*)\s*(?:№|N|#)\s*[A-Za-zА-Яа-я0-9\-/]{2,20}/gi },
         { category: "ВЧ", regex: /\bв\/ч\s*\d{4,6}[А-Яа-яA-Za-z]?\b/gi },
         { category: "СЧЕТ", regex: /\b(?:407|408|423|301)\d{17}\b/g },
         { category: "ИНН", regex: /(?<=\bИНН\s*:?\s*)\d{10,12}\b/gi },
@@ -518,14 +391,13 @@
       let s = text;
       s = s.replace(/【[^】]+】/g, "");
       s = s.replace(/\[\s*\d+(?:\s*[,;\-–]\s*\d+)*\s*\]/g, "");
-      s = s.replace(/\(\s*\d+(?:\s*[,;\-–]\s*\d+)*\s*\)(?=\s*[.,;:!?]|\s*$)/g, "");
       s = s.replace(/\[([^\]]+)\]\((?:https?:\/\/|www\.)[^\)]+\)/g, function(_, label) {
-        return /^(?:https?:\/\/|www\.|[a-zA-Z0-9-]+\.[a-zA-Zа-яА-ЯёЁ]{2,})/.test(label.trim()) ? " " : label;
+        return /^(?:https?:\/\/|www\.|[a-zA-Z0-9-]+\.[a-zA-Z]{2,})/.test(label.trim()) ? " " : label;
       });
       s = s.replace(/(?:https?:\/\/|ftp:\/\/|tg:\/\/|www\.)[^\s\]\)\"'>]+/gi, " ");
-      const domainPattern = "(?:[a-zA-Zа-яА-ЯёЁ0-9-]+\\.)+(?:ru|com|org|net|io|gov|edu|info|biz|рф|su|kz|by|me|ai|co|gorod|moscow|online|site|news|media|tv|pro|tech|app|dev|wiki|uz|ua|de|uk|fr|cn|jp|aif|kp|mk|rg|rt|fm)(?:\\/[^\\s\\]\\)\\\"'>,;:!?]*)?";
+      const domainPattern = "(?:[a-zA-Z0-9-]+\\.)+(?:ru|com|org|net|io|gov|edu|info|biz|su|kz|by|me|ai|co|gorod|moscow|online|site|news|media|tv|pro|tech|app|dev|wiki|uz|ua|de|uk|fr|cn|jp|aif|kp|mk|rg|rt|fm)(?:\\/[^\\s\\]\\)\\\"'>,;:!?]*)?|\\b(?:[а-яА-ЯёЁ0-9-]+\\.)+рф(?:\\/[^\\s\\]\\)\\\"'>,;:!?]*)?";
       s = s.replace(new RegExp("[\\[\\(]\\s*" + domainPattern + "\\s*[\\]\\)]", "gi"), " ");
-      s = s.replace(new RegExp("(?<![\\w@])\\b" + domainPattern + "\\b", "gi"), " ");
+      s = s.replace(new RegExp("(?<![\\w@а-яА-ЯёЁ])" + domainPattern + "(?![\\wа-яА-ЯёЁ])", "gi"), " ");
       s = s.replace(/(?:^|\n)\s*[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+\s*(?=$|\n)/g, "\n");
       s = s.replace(/\s*(?:\(\s*\d+\s+источник(?:а|ов)?\s*\)|\[\s*\d+\s+источник(?:а|ов)?\s*\]|\b\d+\s+источник(?:а|ов)?\b)\s*\.?/gi, "");
       s = s.replace(/(?:^|(?<=[.!?]\s)|(?<=\n))\s*(?:По\s+(?:данным|информации|сообщениям|словам|сведениям|оценкам|версии)|Согласно|Как\s+(?:сообщает|сообщают|передает|передают|пишет|пишут|отмечает|отмечают|указывает))\s+[^,.\n]{2,65},\s*/gi, "");
@@ -604,11 +476,13 @@
       highlightRule(/(?:^|\n)\s*(?:#+\s*|\*\*)?(?:Источники|Источники\s+информации|Sources|References|Ссылки(?:\s+по\s+теме)?|Список\s+литературы)(?:\*\*)?\s*:?[\s\S]*$/gi, "ПОДВАЛ ИСТОЧНИКОВ");
       highlightRule(/(?:По\s+(?:данным|информации|сообщениям|словам|сведениям|оценкам|версии)|Согласно|Как\s+(?:сообщает|сообщают|передает|передают|пишет|пишут|отмечает|отмечают|указывает))\s+[^,.\n]{2,65},/gi, "АТРИБУЦИЯ");
       highlightRule(/(?:【[^】]+】|\[\s*\d+(?:\s*[,;\-–]\s*\d+)*\s*\]|\(?(?:https?:\/\/|www\.)[^\s\]\)\"'>]+\)?|\b\d+\s+источник(?:а|ов)?\s*\.?|\b(?:kubnews|kuban\.aif|krd\.gorod|bloknot-[a-z0-9-]+|vk)\s*\.?)/gi, "ССЫЛКА/БЕЙДЖ");
-      highlightRule(/(?:Конечно!|С радостью помогу[^.!]*[.!]|Важно (?:отметить|заметить|сказать),?\s*(?:что)?|\*\*.*?\*\*)/gi, "МАНИПУЛЯЦИЯ/ВОДА");
+      highlightRule(/(?:Конечно!|С радостью помогу[^.!]*[.!]|Важно (?:отметить|заметить|сказать),?\s*(?:что)?|Как модель ИИ,?|Спросите ГигаЧат|ГигаЧат может ошибаться(?:\s*[—\-–]\s*проверяйте его ответы)?)/gi, "МАНИПУЛЯЦИЯ/ВОДА");
 
       let safeHtml = escapeHtml(workText);
       replacements.forEach(function(item) {
-        safeHtml = safeHtml.replace(item.key, item.html);
+        safeHtml = safeHtml.replace(item.key, function() {
+          return item.html;
+        });
       });
 
       return { html: safeHtml, triggersCount: triggersCount };
@@ -640,22 +514,26 @@
     function processOutbound() {
       const raw = document.getElementById("outboundInput").value;
       if (!raw.trim()) return;
-      if (!consumeDemoCheck("outboundInput", raw)) return;
+
+      vault = {};
+      reverseVault = {};
+      counters = {};
+      lastProcessedText.outboundInput = raw;
 
       const masked = maskPII(raw, true);
       let cleaned = scrubNoiseAndCitations(masked);
-      cleaned = cleaned.replace(/\*\*.*?\*\*/g, "").trim();
+      cleaned = cleaned.replace(/\*\*(.*?)\*\*/g, "$1").trim();
       cleaned = cleaned.replace(/(^|[.!?]\s+|\n)([а-яёa-z])/g, function(_, p1, p2) { return p1 + p2.toUpperCase(); });
       document.getElementById("outboundOutput").value = STRICT_DIRECTIVE + "\n\nЗАПРОС: " + cleaned;
       document.getElementById("outboundMetrics").innerText =
         "Скрыто ПДн в RAM: " + Object.keys(vault).length + " | Утечек в сеть: 0";
       renderVaultTags();
-      if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("success");
+      notifyUser("Щит активирован!");
     }
     function processInbound() {
       const rawReply = document.getElementById("inboundInput").value;
       if (!rawReply.trim()) return;
-      if (!consumeDemoCheck("inboundInput", rawReply)) return;
+      lastProcessedText.inboundInput = rawReply;
 
       const startLen = rawReply.length;
       const xrayRes = buildXrayHtml(rawReply);
@@ -664,18 +542,17 @@
       const cleanedReply = scrubNoiseAndCitations(maskedReply);
       const restoreRes = restorePII(cleanedReply);
       let finalOutput = restoreRes.restored
-        .replace(/\*\*.*?\*\*/g, "")
+        .replace(/\*\*(.*?)\*\*/g, "$1")
         .replace(/\s+([.,;:!?])/g, "$1")
-        .replace(/([^\s.!?])\n/g, "$1.\n")
         .replace(/[ \t]+/g, " ")
         .trim();
       finalOutput = finalOutput.replace(/(^|[.!?]\s+|\n)([а-яёa-z])/g, function(_, p1, p2) { return p1 + p2.toUpperCase(); });
-      finalOutput = finalOutput.replace(/([^\s.!?])$/, "$1.");
+      finalOutput = finalOutput.replace(/([^\s.!?:;])$/, "$1.");
       const savedPct = Math.max(0, Math.round((1 - finalOutput.length / Math.max(1, startLen)) * 100));
       document.getElementById("inboundOutput").value = finalOutput;
       document.getElementById("inboundMetrics").innerText =
         "Индекс шума: " + savedPct + "% | Вырезано триггеров: " + xrayRes.triggersCount + " | Восстановлено ПДн: " + restoreRes.count;
-      if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("success");
+      notifyUser("Ответ очищен, ПДн восстановлены!");
     }
 
     function executeWipeRamVault() {
@@ -687,14 +564,14 @@
       document.getElementById("outboundOutput").value = "";
       document.getElementById("inboundInput").value = "";
       document.getElementById("inboundOutput").value = "";
-      document.getElementById("outboundCounter").innerText = "0 / " + MAX_CHARS + " символов";
-      document.getElementById("inboundCounter").innerText = "0 / " + MAX_CHARS + " символов";
+      document.getElementById("outboundCounter").innerText = "0 символов";
+      document.getElementById("inboundCounter").innerText = "0 символов";
       document.getElementById("xrayView").innerHTML = "RAM-сейф обнулён.";
       document.getElementById("outboundMetrics").innerText = "RAM-сейф обнулён (Zero-Trace).";
       document.getElementById("inboundMetrics").innerText = "Память очищена.";
       renderVaultTags();
       switchTab("clean");
-      if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("warning");
+      notifyUser("RAM-сейф полностью очищен.");
     }
 
     function wipeRamVault() {
@@ -705,12 +582,7 @@
         executeWipeRamVault();
         return;
       }
-      const confirmMsg = "Обнулить RAM-сейф? Все сохранённые ключи ПДн и текст в полях будут удалены.";
-      if (tg && tg.showConfirm) {
-        tg.showConfirm(confirmMsg, function(confirmed) {
-          if (confirmed) executeWipeRamVault();
-        });
-      } else if (confirm(confirmMsg)) {
+      if (confirm("Обнулить RAM-сейф? Все сохранённые ключи ПДн и текст в полях будут удалены.")) {
         executeWipeRamVault();
       }
     }
@@ -719,8 +591,8 @@
       try {
         const clip = await navigator.clipboard.readText();
         const el = document.getElementById(elementId);
-        el.value = clip.slice(0, MAX_CHARS);
-        enforceCharLimit(elementId, counterId);
+        el.value = clip;
+        updateCharCounter(elementId, counterId);
       } catch (e) {
         notifyUser("Нажмите на текстовое поле и выберите «Вставить» вручную.");
       }
@@ -753,42 +625,14 @@
     function copyFrom(elementId) {
       const el = document.getElementById(elementId);
       if (!el.value) return;
-      copySafe(el.value + "\n\n[DEMO H-AGI GATEWAY]");
+      copySafe(el.value);
       notifyUser("Скопировано в буфер обмена!");
     }
 
-    function openLeadModal() {
-      document.getElementById("leadModal").style.display = "block";
-    }
-
-    function closeLeadModal() {
-      document.getElementById("leadModal").style.display = "none";
-    }
-
-    function submitLeadForm() {
-      const name = document.getElementById("leadName").value.trim();
-      const contact = document.getElementById("leadContact").value.trim();
-      const task = document.getElementById("leadTask").value.trim();
-      if (!name || !contact) {
-        notifyUser("Укажите имя и контакт для связи.");
-        return;
-      }
-      const textLead = "Заявка на полную версию H-AGI Gateway:\nИмя: " + name + "\nКонтакт: " + contact + "\nЗадача: " + task;
-      copySafe(textLead);
-      closeLeadModal();
-      if (tg && tg.openTelegramLink && BOT_USERNAME && BOT_USERNAME !== "your_bot_username") {
-        const shareUrl = "https://" + "t.me" + "/" + BOT_USERNAME + "?text=" + encodeURIComponent(textLead);
-        notifyUser("Текст заявки скопирован в буфер! Если он не подставится в чат автоматически, просто вставьте его из буфера обмена.");
-        setTimeout(function() {
-          tg.openTelegramLink(shareUrl);
-        }, 400);
-        return;
-      }
-      notifyUser("Текст заявки скопирован! Отправьте его в чат с ботом.");
-    }
-
-    if (isAuthorized) {
-      updateLimitUI();
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function() {
+        navigator.serviceWorker.register("./sw.js").catch(function() {});
+      });
     }
   </script>
 </body>
